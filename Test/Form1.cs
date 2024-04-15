@@ -45,7 +45,7 @@ namespace Test
         {
             try
             {
-                // Check if an image is selected
+                // check if there is image
                 if (!string.IsNullOrEmpty(openFileDialog1.FileName))
                 {
                     // Read the image file into a byte array
@@ -58,23 +58,22 @@ namespace Test
                         }
                     }
 
-                    // Create MySQL connection and command
+                    
                     using (MySqlConnection connection = new MySqlConnection("datasource=" + mySqlServerName + ";port=3306;username=" + mySqlServerUserId + ";password=" + mySqlServerPassword + ";database=" + mySqlDatabaseName + ";"))
                     {
                         MySqlCommand command = connection.CreateCommand();
 
-                        // Prepare the SQL query
-                        command.CommandText = "INSERT INTO sample_image (images) VALUES (@image)";
+                                                command.CommandText = "INSERT INTO sample_image (images) VALUES (@image)";
                         command.Parameters.AddWithValue("@image", imageData);
 
-                        // Open the connection, execute the command
+                        
                         connection.Open();
                         command.ExecuteNonQuery();
                     }
 
                     MessageBox.Show("Image uploaded successfully!");
 
-                    // Reload data into the DataGridView
+                    
                     ReloadDataGridView();
                 }
                 else
@@ -92,28 +91,28 @@ namespace Test
         {
             try
             {
-                // Create a new DataTable to hold the data
+                
                 DataTable dt = new DataTable();
 
-                // Create a new MySqlConnection
+               
                 using (MySqlConnection connection = new MySqlConnection("datasource=" + mySqlServerName + ";port=3306;username=" + mySqlServerUserId + ";password=" + mySqlServerPassword + ";database=" + mySqlDatabaseName + ";"))
                 {
-                    // Open the connection
+                   
                     connection.Open();
 
-                    // Create a new MySqlCommand to select all data from the sample_image table
+                    
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM sample_image", connection))
                     {
-                        // Create a new MySqlDataAdapter
+                        
                         using (MySqlDataAdapter adp = new MySqlDataAdapter(cmd))
                         {
-                            // Fill the DataTable with the data from the database
+                            
                             adp.Fill(dt);
                         }
                     }
                 }
 
-                // Set the DataSource of the DataGridView to the new DataTable
+                
                 dataGridView1.DataSource = dt;
             }
             catch (Exception ex)
